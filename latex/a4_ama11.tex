@@ -1,0 +1,69 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+
+% \usepackage{savetrees}[subtle]
+\setlength{\parindent}{0pt}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+\DeclareMathOperator{\argmax}{\text{argmax}}
+
+%set graphics path
+\graphicspath{images/}
+
+\begin{document}
+
+\section{Algorithm Implementation}
+
+I implemented the proximal policy optimization following \cite{SpinningUp2018} for the base implemnentation and \cite{huang2022ppo}. 
+
+PPO is derived from Trust Region Policy Optimization (TRPO), which is an actor-critic method that constrains the KL divergence between the old and new policies uising a hard KL constraint. More specifically, at every epoch, TRPO approximately solves the following constrained optimization problem:
+$$\theta_{k+1} = \argmax_{\theta} \mathbb{E}\left[\frac{\pi_{\theta_{k+1}}(a|s)}{\pi_{\theta_k} (a|s)} A^{\pi_{\theta_k}}(s,a)\right]$$
+$$\text{s.t. } \mathbb{E}_{s \sim \pi(\theta_k)}\left[D_{\text{kl}} \pi(\cdot | s) || \pi_{\theta_k}(\cdot | s)\right]$$
+TRPO enforces this using second order methods, making it computationally expensive. The advantages are calcu
+
+
+
+
+\section{Science: Perturbed PPO (PPPO)}
+
+Motivate the experiment:
+
+PPO has some common failure modes in MUJOCO, in ant, it can get stuck in a local minima where the ant doesn't sprint and instead safely walks, and in walker2d it can get stuck in a local minima where the walker doesn't jump and instead safely walks. The perturbed PPO algorithm is designed to address this issue by adding noise to the policy parameters during training, which can help the agent escape local minima and explore more of the policy space.
+
+We can think of the perturbation as a form of regularization that encourages exploration and prevents the policy from getting stuck in suboptimal solutions. By adding noise to the policy parameters, the agent can explore different actions and states that it may not have otherwise considered, which can lead to better performance and faster convergence. With other algorithms such as in supervised learning, adding noise to the model's parameters may help but it is unprincipled, we have no idea what the noise will do the the model, but in the case of PPO and perhaps TRPO, we have a natural way to measure the effect of the noise on the policy, which is the KL divergence between the old and new policies. By monitoring this KL divergence, we can ensure that the perturbation is not too large and is helping the agent explore more effectively whilst still making progress towards the optimal policy.
+
+\subseciton*{Performance Plots}
+
+
+\subsection*{Effect of Perturbation on final gradient direction}
+To demonstrate the effect of the perturvation in the final gradient direction, I run two synchronous updates, lets say we seed the PPO update as to get a deterministic function of the weights. Call it $f$, then the actor from the previous iteration has weight space 
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+
+
+
+\end{document}

@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{SpinningUp2018}
+Joshua Achiam.
+\newblock {Spinning Up in Deep Reinforcement Learning}.
+\newblock 2018.
+
+\bibitem{huang2022ppo}
+Shengyi Huang, Rousslan Fernand~Julien Dossa, Antonin Raffin, Anssi Kanervisto, and Weixun Wang.
+\newblock The 37 implementation details of proximal policy optimization.
+\newblock {\em arXiv preprint arXiv:2005.12729}, 2022.
+
+\end{thebibliography}
